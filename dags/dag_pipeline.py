@@ -1,5 +1,5 @@
 import duckdb
-from datetime import datetime
+import pendulum
 from pathlib import Path
 from airflow.decorators import dag, task
 
@@ -46,14 +46,17 @@ def unir():
 @task
 def preguntas():
     con = duckdb.connect(str(DB_PATH))
-    con.execute(read_sql("preguntas.sql"))
-    print("Consultas de preguntas de negocio ejecutadas correctamente")
+    for numero, consulta in enumerate(read_sql("preguntas.sql").split(";"), start=1):
+        if consulta.strip():
+            print(f"Pregunta {numero}:")
+            print(con.execute(consulta).df().to_string(index=False))
     con.close()
 
 @dag(
     dag_id="dag_pipeline",
-    start_date=datetime(2026, 1, 1),
+    start_date=pendulum.datetime(2026, 1, 1, tz="America/Argentina/Buenos_Aires"),
     schedule="0 2 * * *",
+    max_active_runs=1,
     catchup=False
 )
 def pipeline():

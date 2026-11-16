@@ -1,23 +1,12 @@
-# Entornos virtuales
 env/
 .venv/
 venv/
 
-# Python cache y compilados
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
 
-# Airflow logs, configs y bases locales
 airflow.cfg
 airflow.db
 logs/
 *.log
-
-# Archivos de sistema / IDE
-.DS_Store
-.idea/
-.vscode/
-
-# Nota: analisis.duckdb y output/ se pueden rastrear o regenerar ejecutando python pipeline.py
+standalone_admin_password.txt
